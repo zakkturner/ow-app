@@ -2,37 +2,37 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { ReactNode, ReactElement, useState, useEffect } from "react";
-import axios from "axios";
-
-interface User {
-  competitiveStats: object;
-  endorsement: number;
-  endorsementIcon: string;
-  gamesWon: number;
-  icon: string;
-  level: number;
-  levelIcon: string;
-  name: string;
-  prestige: string;
-  prestigeIcon: string;
-  private: boolean;
-  quickPlayStats: object;
-  rating: number;
-  ratingIcon: string;
-}
+import axios, { AxiosResponse } from "axios";
+import { User } from "./interfaces/interfaces";
 
 export default function Home() {
-  // const [system, setSystem] = useState("");
+  const [system, setSystem] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [user, setUser] = useState<User | null>(null);
   const searchUser = async () => {
-    const response = await axios(
-      "https://ow-api.com/v1/stats/psn/us/hazard317/profile"
+    const response: AxiosResponse = await axios(
+      `https://ow-api.com/v1/stats/${system}/us/${username}/profile`
     );
+
     setUser(response.data);
   };
 
   return (
     <div>
+      <input
+        type="text"
+        placeholder="Enter your user name"
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <select onChange={(e) => setSystem(e.target.value)}>
+        <option value="" selected disabled>
+          Select System
+        </option>
+        <option value="pc">PC</option>
+        <option value="psn">Playstation 4</option>
+        <option value="xbl">Xbox One</option>
+        <option value="nintendo-switch">Nintendo Switch</option>
+      </select>
       <button onClick={searchUser}>Search</button>
       {user && <p>{user.name}</p>}
     </div>
