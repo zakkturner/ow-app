@@ -4,6 +4,7 @@ import styles from "../styles/Home.module.css";
 import { ReactNode, ReactElement, useState, useEffect } from "react";
 import axios, { AxiosResponse } from "axios";
 import { User } from "./interfaces/interfaces";
+import PlayerCard from "../components/PlayerCard";
 
 export default function Home() {
   const [system, setSystem] = useState<string>("");
@@ -34,7 +35,7 @@ export default function Home() {
         <option value="nintendo-switch">Nintendo Switch</option>
       </select>
       <button onClick={searchUser}>Search</button>
-      {user && <p>{user.name}</p>}
+      {user && <PlayerCard user={user} />}
     </div>
   );
 }
